@@ -1,8 +1,8 @@
 # Return the size of backups per VM for the given repositories. Optionally ouptut as CSV.
-# v1.0.0, 18.07.2019
+# v1.0.1, 18.07.2019
 # Stefan Zimmermann <stefan.zimmermann@veeam.com>
 [CmdletBinding()]
-Param(    
+Param(        
     [switch]$csv
 )
 DynamicParam {
@@ -28,10 +28,15 @@ begin {
 process {
     $repos = @()
     foreach ($repoName in $Repository) {
-        $repos += (Get-VBRBackupRepository -Name $repoName)
+        $rep = Get-VBRBackupRepository -Name $repoName
+        if ($rep -eq $null) {
+            $rep = Get-VBRBackupRepository -ScaleOut -Name $repoName
+        }
+
+        $repos += $rep        
     }
     
-    $allRepoRestorePoints = Get-VBRRestorePoint | ? { $_.FindRepository() -in $repos }
+    $allRepoRestorePoints = Get-VBRRestorePoint | ? { $_.FindRepository().id -in $repos.id }
 
     foreach ($repo in $repos) {
         

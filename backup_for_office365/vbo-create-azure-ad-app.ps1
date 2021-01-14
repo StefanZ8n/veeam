@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS
-    Create an Azure AD application for authentication, backup and recover from Veeam's Backup for Microsoft Office 365
+    Create an Azure AD application for authentication, backup and recovery from Veeam's Backup for Microsoft Office 365
 .DESCRIPTION
     This script is meant to be used by a security or Azure AD administrator to provide the necessary Azure AD application to be used in Veeam Backup for Microsoft Office 365.
 
@@ -25,7 +25,7 @@
 .NOTES
     Written by Stefan Zimmermann <stefan.zimmermann@veeam.com>
 
-    v1.0.2, 14.01.2021
+    v1.0.3, 14.01.2021
 
     Released under the MIT license.
 .LINK

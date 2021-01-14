@@ -25,7 +25,7 @@
 .NOTES
     Written by Stefan Zimmermann <stefan.zimmermann@veeam.com>
 
-    v1.0.1, 14.01.2021
+    v1.0.2, 14.01.2021
 
     Released under the MIT license.
 .LINK
@@ -42,7 +42,7 @@ Param(
     # DisplayName for the app registration    
     [String] $appName = "Veeam Backup for Microsoft Office 365",
 
-    # Limit permissions to usage for only backup or restore, omitting this creates permissions for both
+    # Limit permissions to only those required for backup, InteractiveRestore (device authentication flow, e.g. Explorers) or ProgrammaticRestore (REST API-only), omitting this creates permissions for all usage types
     [String][ValidateSet("Backup", "InteractiveRestore", "ProgrammaticRestore")] $limitUsageTo,
 
     # Limit permissions to the following service(s). Omitting this creates permissions for all supported.
@@ -323,7 +323,7 @@ $bin = $cert.GetRawCertData()
 
 $base64Value = [System.Convert]::ToBase64String($bin)
 $bin = $cert.GetCertHash()
-New-AzureADApplicationKeyCredential -ObjectId $vboApp.ObjectId -Type AsymmetricX509Cert -Usage Verify -Value $base64Value -EndDate $(Get-Date -UFormat "%Y/%m/%d" -Date $cert.NotAfter) -OutVariable $keyCredential
+New-AzureADApplicationKeyCredential -ObjectId $vboApp.ObjectId -Type AsymmetricX509Cert -Usage Verify -Value $base64Value -EndDate $(Get-Date -UFormat "%Y/%m/%d" -Date $cert.NotAfter) > $null
 
 # Filter permissions based on limitations
 
